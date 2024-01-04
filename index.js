@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 5001;
 
@@ -19,7 +20,7 @@ app.use((req, res, next) => {
 router = express.Router();
 app.use(router);
 
-app.use(bodyParsr.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));

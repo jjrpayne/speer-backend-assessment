@@ -1,8 +1,11 @@
 const env = require('./environmentVariables');
 const express = require('express');
 const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit')
 const app = express();
 const PORT = env.PORT || 5001;
+const RATE_LIMIT_WINDOW = env.RATE_LIMIT_WINDOW || 15;
+const RATE_LIMIT_MAX = env.RATE_LIMIT_MAX || 50;
 
 // Allow Acces Control Allow Origin headers
 app.use((req, res, next) => {
@@ -26,8 +29,18 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use("/", require ("./routes/auth"));
+const rateLimiter = rateLimit({
+    windowMs: RATE_LIMIT_WINDOW * 60 * 1000,
+    max: 2
+});
+app.use(rateLimiter);
+
+app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/notes"));
+
+app.get('/', function (req, res) {
+    return res.send('Hello World')
+})
 
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);

@@ -8,3 +8,5 @@ e.DB_PASSWORD = process.env.DB_PASSWORD;
 e.DB_NAME = process.env.DB_NAME;
 e.DB_PORT = process.env.DB_PORT;
 e.JWT_SECRET = process.env.JWT_SECRET;
+e.RATE_LIMIT_WINDOW = process.env.RATE_LIMIT_WINDOW;
+e.RATE_LIMIT_MAX = process.env.RATE_LIMIT_MAX;

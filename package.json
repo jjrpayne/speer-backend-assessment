@@ -4,7 +4,7 @@
   "description": "backend assessment for speer.io",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles --forceExit"
+    "test": "jest --runInBand --forceExit"
   },
   "author": "john payne",
   "license": "ISC",

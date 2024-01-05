@@ -1,4 +1,4 @@
-const app = require('../index');
+const app = require('../app');
 const request = require('supertest');
 const env = require('../environmentVariables');
 const jwt = require('jsonwebtoken');

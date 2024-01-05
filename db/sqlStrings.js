@@ -24,6 +24,9 @@ WHERE id = $2 RETURNING id, user_id, note`;
 e.deleteNote = `DELETE FROM notes
 WHERE id = $1 RETURNING id, user_id, note`;
 
+e.deleteUserByUsername = `DELETE FROM users
+WHERE username = $1`;
+
 e.searchNotes = `SELECT id, note FROM notes
 WHERE user_id = $1
 AND ts @@ to_tsquery('english', $2)`;

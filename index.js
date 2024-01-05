@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit')
 const app = express();
-const PORT = env.PORT || 5001;
 const RATE_LIMIT_WINDOW = env.RATE_LIMIT_WINDOW || 15;
 const RATE_LIMIT_MAX = env.RATE_LIMIT_MAX || 50;
 
@@ -37,11 +36,8 @@ app.use(rateLimiter);
 
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/notes"));
-
 app.get('/', function (req, res) {
     return res.send('Hello World')
 })
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`);
-})
+module.exports = app;

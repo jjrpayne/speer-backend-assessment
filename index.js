@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 
 const rateLimiter = rateLimit({
     windowMs: RATE_LIMIT_WINDOW * 60 * 1000,
-    max: 2
+    max: RATE_LIMIT_MAX
 });
 app.use(rateLimiter);
 

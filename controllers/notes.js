@@ -15,7 +15,7 @@ module.exports = {
             const notesList = result.rows;
             return res.status(200).send(notesList);
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -27,16 +27,16 @@ module.exports = {
         try {
             const result = await pool.query(text, values);
             if (result.rowCount == 0){
-                return res.status(404).send({message: "No note found with this id."})
+                return res.status(404).send({error: "No note found with this id."})
             }
             const note = result.rows[0];
             if (userId !== note.user_id){
-                return res.status(401).send({message: "Access denied."})
+                return res.status(401).send({error: "Access denied."})
             } else {
                 return res.status(200).send(note);
             }
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -48,17 +48,17 @@ module.exports = {
         try {
             const result = await pool.query(text, values);
             if (result.rowCount == 0){
-                return res.status(404).send({message: "No note found with this id."})
+                return res.status(404).send({error: "No note found with this id."})
             }
             const note = result.rows[0];
             if (userId !== note.user_id){
-                return res.status(401).send({message: "Access denied."})
+                return res.status(401).send({error: "Access denied."})
             } else {
                 req.body.old_note = note.note;
                 next();
             }
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -77,7 +77,7 @@ module.exports = {
                 note: note
             });
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -95,7 +95,7 @@ module.exports = {
                 note: note
             });
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -111,7 +111,7 @@ module.exports = {
                 deletedNote: note
             });
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
         }
     },
 
@@ -124,7 +124,7 @@ module.exports = {
             const result = await pool.query(text, values);
             if(result.rowCount === 0){
                 return res.status(401).send({
-                    message: "No user found with that username."
+                    error: "No user found with that username."
                 })
             } else {
                 req.user_id = result.rows[0].id;
@@ -132,7 +132,29 @@ module.exports = {
                 next();
             }
         } catch (err) {
-            return res.status(500).send(err);
+            return res.status(500).send({error: "Internal server error"});
+        }
+    },
+
+    searchNotes: async(req, res) => {
+        if(!req.query.q){
+            return res.status(400).send({error: "Query required."});
+        }
+        const userId = req.user_id;
+        const text = qStrings.searchNotes;
+        var values = [userId, req.query.q];
+
+        try {
+            const result = await pool.query(text, values);
+            if(result.rowCount === 0){
+                return res.status(200).send({
+                    message: "No results found for this query."
+                })
+            } else {
+                res.status(200).send(result.rows);
+            }
+        } catch (err) {
+            return res.status(500).send({error: "Internal server error"});
         }
     }
 }

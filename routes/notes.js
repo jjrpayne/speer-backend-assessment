@@ -43,4 +43,10 @@ router.post('/api/notes/:id/share',
     NotesController.createNewNote
 );
 
+// search notes by keyword
+router.get('/api/search',
+    UsersController.verifyToken,
+    NotesController.searchNotes
+);
+
 module.exports = router;

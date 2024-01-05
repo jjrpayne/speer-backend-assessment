@@ -81,7 +81,6 @@ module.exports = {
     },
 
     editNote : async (req, res) => {
-        const userId = req.user_id;
         const text = qStrings.editNote;
         const b = req.body;
         var values = [b.note, 1*req.params.id];
@@ -93,6 +92,22 @@ module.exports = {
                 message: "Success! Note updated.",
                 oldNote: b.old_note,
                 note: note
+            });
+        } catch (err) {
+            return res.status(500).send(err);
+        }
+    },
+
+    deleteNote: async (req, res) => {
+        const text = qStrings.deleteNote;
+        var values = [1*req.params.id];
+
+        try {
+            const result = await pool.query(text, values);
+            const note = result.rows[0];
+            return res.status(200).send({
+                message: "Success! Note deleted.",
+                deletedNote: note
             });
         } catch (err) {
             return res.status(500).send(err);

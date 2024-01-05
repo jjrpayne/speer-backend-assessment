@@ -24,4 +24,10 @@ router.put('/api/notes/:id',
     NotesController.editNote
 );
 
+router.delete('/api/notes/:id',
+    UsersController.verifyToken,
+    NotesController.checkIfNoteBelongsToUser,
+    NotesController.deleteNote
+);
+
 module.exports = router;

@@ -20,3 +20,6 @@ VALUES ($1, $2) RETURNING *`;
 e.editNote = `UPDATE notes
 SET note = $1
 WHERE id = $2 RETURNING *`;
+
+e.deleteNote = `DELETE FROM notes
+WHERE id = $1 RETURNING *`;

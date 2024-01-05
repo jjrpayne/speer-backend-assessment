@@ -40,6 +40,28 @@ module.exports = {
         }
     },
 
+    checkIfNoteBelongsToUser : async(req, res, next) => {
+        const userId = req.user_id;
+        const text = qStrings.getNoteById;
+        var values = [1*req.params.id];
+
+        try {
+            const result = await pool.query(text, values);
+            if (result.rowCount == 0){
+                return res.status(404).send({message: "No note found with this id."})
+            }
+            const note = result.rows[0];
+            if (userId !== note.user_id){
+                return res.status(401).send({message: "Access denied."})
+            } else {
+                req.body.old_note = note.note;
+                next();
+            }
+        } catch (err) {
+            return res.status(500).send(err);
+        }
+    },
+
     createNewNote : async (req, res) => {
         const userId = req.user_id;
         const text = qStrings.addNewNote;
@@ -51,6 +73,25 @@ module.exports = {
             const note = result.rows[0];
             return res.status(200).send({
                 message: "Success! Note created.",
+                note: note
+            });
+        } catch (err) {
+            return res.status(500).send(err);
+        }
+    },
+
+    editNote : async (req, res) => {
+        const userId = req.user_id;
+        const text = qStrings.editNote;
+        const b = req.body;
+        var values = [b.note, 1*req.params.id];
+
+        try {
+            const result = await pool.query(text, values);
+            const note = result.rows[0];
+            return res.status(200).send({
+                message: "Success! Note updated.",
+                oldNote: b.old_note,
                 note: note
             });
         } catch (err) {

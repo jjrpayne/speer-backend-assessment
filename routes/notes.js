@@ -18,4 +18,10 @@ router.post('/api/notes',
     NotesController.createNewNote
 );
 
+router.put('/api/notes/:id',
+    UsersController.verifyToken,
+    NotesController.checkIfNoteBelongsToUser,
+    NotesController.editNote
+);
+
 module.exports = router;

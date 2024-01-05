@@ -16,3 +16,7 @@ WHERE id = $1 LIMIT 1`;
 e.addNewNote = `INSERT INTO notes
 (user_id, note)
 VALUES ($1, $2) RETURNING *`;
+
+e.editNote = `UPDATE notes
+SET note = $1
+WHERE id = $2 RETURNING *`;

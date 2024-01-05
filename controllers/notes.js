@@ -63,6 +63,7 @@ module.exports = {
     },
 
     createNewNote : async (req, res) => {
+        console.log("creating new note");
         const userId = req.user_id;
         const text = qStrings.addNewNote;
         const b = req.body;
@@ -109,6 +110,27 @@ module.exports = {
                 message: "Success! Note deleted.",
                 deletedNote: note
             });
+        } catch (err) {
+            return res.status(500).send(err);
+        }
+    },
+
+    findRecipientUser: async (req, res, next) => {
+        const b = req.body;
+        const text = qStrings.findUser;
+        var values = [b.username];
+
+        try {
+            const result = await pool.query(text, values);
+            if(result.rowCount === 0){
+                return res.status(401).send({
+                    message: "No user found with that username."
+                })
+            } else {
+                req.user_id = result.rows[0].id;
+                req.body.note = b.old_note;
+                next();
+            }
         } catch (err) {
             return res.status(500).send(err);
         }

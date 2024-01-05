@@ -6,3 +6,9 @@ VALUES ($1, $2) RETURNING *`;
 
 e.findUser = `SELECT * FROM users
 WHERE username = $1 LIMIT 1`;
+
+e.getAllNotesForUser = `SELECT * FROM notes
+WHERE user_id = $1`;
+
+e.getNoteById = `SELECT * FROM notes
+WHERE id = $1 LIMIT 1`;

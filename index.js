@@ -1,10 +1,8 @@
-require('dotenv').config();
+const env = require('./environmentVariables');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const PORT = process.env.PORT || 5001;
-
-const {DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT} = process.env;
+const PORT = env.PORT || 5001;
 
 // Allow Acces Control Allow Origin headers
 app.use((req, res, next) => {
@@ -29,6 +27,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/", require ("./routes/auth"));
+app.use("/", require("./routes/notes"));
 
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);

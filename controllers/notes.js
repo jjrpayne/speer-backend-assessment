@@ -38,5 +38,23 @@ module.exports = {
         } catch (err) {
             return res.status(500).send(err);
         }
+    },
+
+    createNewNote : async (req, res) => {
+        const userId = req.user_id;
+        const text = qStrings.addNewNote;
+        const b = req.body;
+        var values = [userId, b.note];
+
+        try {
+            const result = await pool.query(text, values);
+            const note = result.rows[0];
+            return res.status(200).send({
+                message: "Success! Note created.",
+                note: note
+            });
+        } catch (err) {
+            return res.status(500).send(err);
+        }
     }
 }

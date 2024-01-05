@@ -12,3 +12,7 @@ WHERE user_id = $1`;
 
 e.getNoteById = `SELECT * FROM notes
 WHERE id = $1 LIMIT 1`;
+
+e.addNewNote = `INSERT INTO notes
+(user_id, note)
+VALUES ($1, $2) RETURNING *`;

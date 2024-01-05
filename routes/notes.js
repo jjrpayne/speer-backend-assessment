@@ -13,4 +13,9 @@ router.get('/api/notes/:id',
     NotesController.getNoteById
 );
 
+router.post('/api/notes',
+    UsersController.verifyToken,
+    NotesController.createNewNote
+);
+
 module.exports = router;
